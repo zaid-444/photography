@@ -1,0 +1,150 @@
+{% extends 'booking/base.html' %}
+{% block title %}Book {{ photographer.user.username }}{% endblock %}
+
+{% block content %}
+<style>
+  body {
+    background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+    min-height: 100vh;
+  }
+
+  .booking-card {
+    backdrop-filter: blur(20px);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    color: white;
+    padding: 30px;
+    max-width: 600px;
+    margin: 40px auto;
+    animation: fadeInUp 0.8s ease;
+  }
+
+  .booking-card h2 {
+    color: #ffc107;
+    margin-bottom: 25px;
+    text-align: center;
+    animation: fadeIn 1s ease-in-out;
+  }
+
+  .booking-card label {
+    color: #fff;
+    font-weight: 500;
+    margin-bottom: 5px;
+    display: block;
+  }
+
+  .booking-card input[type="text"],
+  .booking-card input[type="email"],
+  .booking-card input[type="date"],
+  .booking-card input[type="time"],
+  .booking-card textarea,
+  .booking-card select,
+  .booking-card input[type="number"] {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: white;
+    padding: 10px 12px;
+    border-radius: 8px;
+    width: 100%;
+    margin-bottom: 15px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .booking-card input:focus,
+  .booking-card textarea:focus,
+  .booking-card select:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25);
+    color: #fff;
+  }
+
+  .booking-card textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+
+  .booking-card button {
+    background-color: #ffc107;
+    border: none;
+    font-weight: 600;
+    padding: 12px 20px;
+    border-radius: 10px;
+    width: 100%;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    color: #000;
+    font-size: 1.1rem;
+    margin-top: 10px;
+  }
+
+  .booking-card button:hover {
+    background-color: #e0a800;
+    color: #fff;
+  }
+
+  .booking-card select option{
+    background-color: #203a43;
+    color: white;
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-15px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .errorlist {
+    color: #ff6b6b;
+    margin-bottom: 10px;
+    list-style: none;
+    padding-left: 0;
+  }
+</style>
+
+<div class="booking-card">
+  <h2>Book {{ photographer.user.username }}</h2>
+
+  <form method="POST">
+    {% csrf_token %}
+    
+    <div class="form-group mb-3">
+      <label for="event_type">Event Type</label>
+      {{ form.event_type }}
+    </div>
+    
+    <div class="form-group mb-3">
+      <label for="venue">Venue</label>
+      {{ form.venue }}
+    </div>
+    
+    <div class="form-group mb-3">
+      <label for="guest_count">Guest Count</label>
+      {{ form.guest_count }}
+    </div>
+    
+    <div class="form-group mb-3">
+      <label for="date">Date</label>
+      {{ form.date }}
+    </div>
+    
+    <div class="form-group mb-3">
+      <label for="time">Time</label>
+      {{ form.time }}
+    </div>
+    
+    <div class="form-group mb-3">
+      <label for="message">Message</label>
+      {{ form.message }}
+    </div>
+    
+    <button type="submit" class="btn btn-primary">Book Now</button>
+  </form>
+</div>
+{% endblock %}

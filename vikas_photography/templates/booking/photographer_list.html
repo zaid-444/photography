@@ -1,0 +1,101 @@
+{% extends 'booking/base.html' %}
+{% load static %}
+
+{% block title %}A One Pandey Photography{% endblock %}
+
+{% block content %}
+<style>
+  body {
+    background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+  }
+
+  .card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    color: white;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 15px;
+  }
+
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(255, 255, 255, 0.15);
+  }
+
+  .card-img-top {
+    height: 250px;
+    object-fit: cover;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+  }
+
+  .card-title {
+    font-weight: bold;
+    color: #ffc107;
+  }
+
+  .card-text {
+    color: #f1f1f1;
+    font-size: 0.95rem;
+  }
+
+  .no-photographers {
+    color: #ffc107;
+    font-weight: 600;
+    text-align: center;
+    margin-top: 40px;
+  }
+
+  h3 {
+    color: #ffc107;
+    text-align: center;
+    margin-bottom: 40px;
+    animation: fadeIn 1s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-15px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+
+<div class="container mt-5 mb-5">
+  <h3>📸 Available Photographers</h3>
+
+  {% if photographers %}
+    <div class="row">
+      {% for photographer in photographers %}
+        <div class="col-md-6 col-lg-4 mb-4">
+          <div class="card h-100 shadow-sm">
+            {% if photographer.profile_pic %}
+              <img src="{{ photographer.profile_pic.url }}" class="card-img-top" alt="{{ photographer.user.username }}">
+            {% else %}
+              <img src="{% static 'default-photographer.jpg' %}" class="card-img-top" alt="Default">
+            {% endif %}
+            <div class="card-body">
+  <h5 class="card-title">{{ photographer.user.username }}</h5>
+  <p class="card-text">
+    <strong>Specialty:</strong> {{ photographer.specialty }}<br>
+    <strong>Location:</strong> {{ photographer.location }}
+  </p>
+
+  <a href="{% url 'book_photographer' photographer.id %}" 
+     class="btn btn-warning w-100 mt-2">📅 Book Now</a>
+</div>
+
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="no-photographers">🚫 No photographers available yet.</p>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'booking/base.html' %}
+{% block content %}
+<div class="container mt-4">
+  <h3>Welcome, {{ request.user.username }}</h3>
+  <p><strong>Specialty:</strong> {{ profile.photographerprofile.specialty }}</p>
+  <p><strong>Location:</strong> {{ profile.photographerprofile.location }}</p>
+
+  <h4 class="mt-4">📑 Your Bookings</h4>
+  {% if bookings %}
+    <table class="table table-bordered text-white">
+      <thead>
+        <tr>
+          <th>Client</th>
+          <th>Event Date</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for booking in bookings %}
+          <tr>
+            <td>{{ booking.client.username }}</td>
+            <td>{{ booking.event_date }}</td>
+            <td>{{ booking.status }}</td>
+            <td>
+              {% if booking.status == 'pending' %}
+                <a href="{% url 'update_booking_status' booking.id 'accepted' %}" class="btn btn-success btn-sm">Accept</a>
+                <a href="{% url 'update_booking_status' booking.id 'rejected' %}" class="btn btn-danger btn-sm">Reject</a>
+              {% else %}
+                <span>{{ booking.status }}</span>
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>No bookings yet.</p>
+  {% endif %}
+</div>
+{% endblock %}

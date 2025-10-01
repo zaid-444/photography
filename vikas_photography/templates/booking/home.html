@@ -1,0 +1,160 @@
+{% extends 'booking/base.html' %}
+
+{% block title %}A One Pandey Photography{% endblock %}
+
+{% block hero %}
+{% load static %}
+<!-- Hero Section -->
+<div class="hero position-relative">
+    <video autoplay muted loop playsinline style="width:100%; height: 80vh; object-fit: cover;">
+        <source src="{% static 'videos/banner.mp4' %}" type="video/mp4">
+    </video>
+    <div class="position-absolute top-0 start-0 w-100 h-100" style="background: rgba(0,0,0,0.5); z-index:1;"></div>
+    <div class="position-absolute top-50 start-50 translate-middle text-white text-center z-2 animate__animated animate__fadeInDown">
+        <h1 class="display-2 fw-bold">Welcome to A One Pandey Photography</h1>
+        <p class="lead">Capture your memories with the best in Ayodhya (Fzb.)</p>
+        <a href="{% url 'photographer_list' %}" class="btn btn-warning btn-lg mt-3 shadow">📅 Book Now</a>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+{% load static %}
+<style>
+    body {
+        background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+        min-height: 100vh;
+    }
+    .fw-bold {
+        color: white;
+    }
+</style>
+
+<!-- Services -->
+<h2 class="mb-4 fw-bold" data-aos="fade-up">📸 Our Services</h2>
+<div class="row g-4" data-aos="fade-up">
+    {% for service in services %}
+    <div class="col-md-4">
+        <div class="card shadow-sm h-100 border-0">
+            <img src="{% static service.image %}" class="card-img-top" alt="{{ service.title }}" height="600">
+            <div class="card-body">
+                <h5 class="card-title">{{ service.title }}</h5>
+                <p class="card-text">{{ service.description }}</p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Photography Styles -->
+<h2 class="fw-bold text-white mt-5" data-aos="fade-up">Explore Photography Styles</h2>
+<div class="row text-center text-white g-4 mt-3" data-aos="fade-up">
+    <div class="col-md-3">
+        <i class="bi bi-heart-pulse display-4 text-warning"></i>
+        <h5 class="mt-2">Pre-Wedding</h5>
+    </div>
+    <div class="col-md-3">
+        <i class="bi bi-camera-reels display-4 text-warning"></i>
+        <h5 class="mt-2">Cinematic Shoots</h5>
+    </div>
+    <div class="col-md-3">
+        <i class="bi bi-person-video3 display-4 text-warning"></i>
+        <h5 class="mt-2">Portfolio</h5>
+    </div>
+    <div class="col-md-3">
+        <i class="bi bi-camera2 display-4 text-warning"></i>
+        <h5 class="mt-2">Baby Shoot</h5>
+    </div>
+</div>
+
+<!-- Why Choose Us -->
+<h2 class="fw-bold text-white mt-5" data-aos="fade-up">Why Choose A One Pandey Photography?</h2>
+<div class="row text-white mt-3 g-4" data-aos="fade-up">
+    <div class="col-md-4">
+        <div class="card bg-dark border-0 h-100 shadow text-light">
+            <div class="card-body text-center">
+                <i class="bi bi-stars display-4 text-warning"></i>
+                <h5 class="card-title mt-2">10+ Years Experience</h5>
+                <p class="card-text">Capturing memories with creativity & precision since 2012.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-dark border-0 h-100 shadow text-light">
+            <div class="card-body text-center">
+                <i class="bi bi-camera-video display-4 text-warning"></i>
+                <h5 class="card-title mt-2">Cinematic Shoots</h5>
+                <p class="card-text">We don’t just click, we tell stories through frames.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-dark border-0 h-100 shadow text-light">
+            <div class="card-body text-center">
+                <i class="bi bi-people display-4 text-warning"></i>
+                <h5 class="card-title mt-2">Happy Clients</h5>
+                <p class="card-text">Hundreds of happy families and couples recommend us.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Testimonials -->
+<h2 class="text-white fw-bold mt-5 text-center">❤️ What Our Clients Say</h2>
+<div id="testimonialCarousel" class="carousel slide mt-4" data-bs-ride="carousel">
+  <div class="carousel-inner text-white text-center">
+    <div class="carousel-item active">
+      <blockquote class="blockquote">
+        <p>"Best photographer in town! Our wedding memories are truly magical."</p>
+        <footer class="blockquote-footer text-white">Ravi & Priya</footer>
+      </blockquote>
+    </div>
+    <div class="carousel-item">
+      <blockquote class="blockquote">
+        <p>"Highly professional team and outstanding results."</p>
+        <footer class="blockquote-footer text-white">Neha Kapoor</footer>
+      </blockquote>
+    </div>
+  </div>
+</div>
+
+<!-- Gallery -->
+    <h2 class="mb-4 fw-bold" data-aos="fade-up">📸 Our Services</h2>
+    <div class="row g-4" data-aos="fade-up">
+        <div class="col-md-4">
+            <div class="card shadow-sm h-100 border-0">
+                <img src="{% static 'images/img1.jpg' %}" class="card-img-top" alt="Weddings" height="600">
+                <div class="card-body">
+                    <h5 class="card-title">Wedding Photography</h5>
+                    <p class="card-text">Timeless captures for your most memorable day.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm h-100 border-0">
+                <img src="{% static 'images/img2.jpg' %}" class="card-img-top" alt="Events" height="600">
+                <div class="card-body">
+                    <h5 class="card-title">Event Photography</h5>
+                    <p class="card-text">Capturing joy in every celebration.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm h-100 border-0">
+                <img src="{% static 'images/img3.jpg' %}" class="card-img-top" alt="Portraits" height="600">
+                <div class="card-body">
+                    <h5 class="card-title">Portrait Sessions</h5>
+                    <p class="card-text">Studio and outdoor portraits with personality.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Floating WhatsApp Button -->
+<a href="https://wa.me/918176030749" class="position-fixed bottom-0 end-0 m-4 btn btn-success btn-lg rounded-circle shadow" style="z-index: 999;">
+  <i class="bi bi-whatsapp"></i>
+</a>
+{% endblock %}
