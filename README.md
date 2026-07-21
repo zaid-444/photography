@@ -2,7 +2,7 @@
 
 A feature-rich, enterprise-structured full-stack web application designed to streamline photography service bookings. Built with a robust **Python/Django** backend, this platform implements strict **Role-Based Access Control (RBAC)** to deliver targeted dashboards and isolated workflows for Administrators, Clients, and Photographers.
 
-🌐 **Live Architecture Demo:** [View Live App](https://zaid444.pythonanywhere.com/)
+🌐 **Live Architecture Demo:** [View Live App](https://zaid1dev.pythonanywhere.com/)
 
 ---
 
