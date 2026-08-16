@@ -1,101 +1,128 @@
 # 📸 Professional Online Photography Booking Platform
 
-A feature-rich, enterprise-structured full-stack web application designed to streamline photography service bookings. Built with a robust **Python/Django** backend, this platform implements strict **Role-Based Access Control (RBAC)** to deliver targeted dashboards and isolated workflows for Administrators, Clients, and Photographers.
+A feature-rich, enterprise-structured full-stack web application designed to streamline photography service bookings. Initiated in **September 2025**. Built with a robust **Python/Django** backend, this platform implements strict **Role-Based Access Control (RBAC)** to deliver targeted dashboards and isolated workflows for Administrators, Clients, and Photographers.
 
 🌐 **Live Architecture Demo:** [View Live App](https://zaid1dev.pythonanywhere.com/)
 
 ---
 
-### 🚀 Key Technical Highlights
+### 🚀 Key Technical & Operational Features
 
-* **Advanced Role-Based Access Control (RBAC):** Custom authentication framework using Django User + `UserProfile` linkage to securely segregate workflows for Admin, Photographers, and Clients.
-* **Modern UI Architecture:** Responsive frontend designed with elegant **Glass-morphism UI effects**, custom dark gradients, **AOS (Animate On Scroll)** animation systems, and a dynamic floating WhatsApp integration.
-* **Smart Booking & Scheduling Ledger:** Multi-state workflow engine tracking event parameters (`event_type`, `guest_count`, `date/time slots`) with automated operational states (`pending`, `confirmed`, `cancelled`).
-* **Real-time Event Notification Subsystem:** Keeps clients instantly informed via automated alerts whenever an assignment status is updated by a photographer.
+* **🔐 Advanced Role-Based Access Control (RBAC):** Custom authentication framework using Django `User` + `UserProfile` linkage to securely segregate workflows for Admin, Photographers, and Clients.
+* **📅 Calendar Availability Lock Engine:** Prevents double-booking by dynamically locking occupied dates for photographers and preventing selection of past dates.
+* **🔍 Photographer Search & Filter System:** Real-time multi-criteria filtering by name/keyword, city location, and photography specialty (Wedding, Portrait, Cinematic, etc.).
+* **📞 Client Contact Details Ledger:** Captures client full name, mobile number (with click-to-call), and email address during booking requests so photographers can communicate instantly.
+* **✏️ Photographer Self-Service Profile Management:** Enables approved photographers to update their profile picture (DP), specialty, city location, and contact numbers.
+* **✨ Glassmorphic UI & 5-Second Auto-Dismiss Alerts:** Responsive dark slate and gold UI featuring backdrop blur cards and auto-dismissing 5-second toast notification alerts.
+* **📱 Mobile Responsive Architecture:** Optimised layouts for mobile screens, including responsive headers, compact cards, and drawer menus.
 
 ---
 
-### 🗄️ System Architecture & Database Schema
-
-The platform utilizes an optimized relational schema engineered to handle multi-user interactions seamlessly:
+### 🗄️ System Architecture & File Structure
 
 ```text
-vikas_photography/ (Project Root)
+photography/ (Project Root)
 ├── booking/                      # Main Core Application
-│   ├── models.py                 # Relational Database Schema
-│   ├── views.py                  # Functional Controllers & Authentication
-│   ├── forms.py                  # Form Validation Engines
+│   ├── models.py                 # Relational Database Schema (UserProfile, PhotographerProfile, Booking, Notification)
+│   ├── views.py                  # Controllers & Search/Booking/Filter Business Logic
+│   ├── forms.py                  # Form Validation Engines & Custom Cleaners
 │   └── urls.py                   # App-level Endpoint Routing
-├── templates/                    # Server-Side Rendered (SSR) Glassmorphic UI
-└── media/photographers/          # Isolated Media Upload Pipeline
-📊 Core Relational Data Models:
-UserProfile: Extends Django's core Auth module; encapsulates structural role definition ('client' / 'photographer') and an administrative is_approved verification pipeline.
+├── templates/                    # Server-Side Rendered (SSR) Glassmorphic UI Templates
+│   └── booking/
+│       ├── base.html             # Global Glassmorphic Layout & Navigation
+│       ├── home.html             # Hero Video & Portfolio Showcase
+│       ├── photographer_list.html# Search & Filter Photographers Grid
+│       ├── book_photographer.html# Booking Form & Dynamic Calendar Lock
+│       ├── dashboard.html        # Photographer & Client Management Dashboards
+│       └── edit_photographer_profile.html # Profile Update Panel
+├── static/                       # Static CSS, JS, Brand Logos & Gallery Media
+├── media/photographers/          # Isolated User Profile Image Pipeline
+├── .gitignore                    # Production Git Ignore Rules
+├── requirements.txt              # Project Dependencies
+└── LICENSE                       # Official MIT Open Source License
+```
 
-PhotographerProfile: Maps professional profiles to users with target attributes like specialty, location, and secure image-upload pipelines (profile_pic).
+---
 
-Booking: The relational bridge connecting Clients, Photographers, schedules, and structural states (status).
+### 📊 Core Relational Data Models
 
-Notification: Relational message ledger managing state-based communication queues with is_read boolean flags.
+1. **`UserProfile`:** Extends Django's core Auth module; encapsulates structural role definition (`client` / `photographer`) and an administrative `is_approved` verification pipeline.
+2. **`PhotographerProfile`:** Maps professional profiles to users with attributes like full name, phone, specialty, location, and secure image upload pipelines (`profile_pic`).
+3. **`Booking`:** Relational bridge connecting Clients, Photographers, schedules (`date`, `time`), client contact info (`client_name`, `client_phone`, `client_email`), event parameters (`venue`, `guest_count`, `message`), and operational states (`status`: pending, accepted, confirmed, rejected, cancelled).
+4. **`Notification`:** Relational message ledger managing state-based communication queues with `is_read` boolean flags.
 
-🔄 End-to-End Application Flow
-Plaintext
-[User Signup] ──> [Role Assignment]
+---
+
+### 🔄 End-to-End Application Flow
+
+```text
+[User Signup] ──> [Role Selection: Client / Photographer]
                        │
          ┌─────────────┴─────────────┐
          ▼                           ▼
   [Client Role]             [Photographer Role]
          │                           │
          ▼                           ▼
-[Browse Profiles]           [Await Admin Approval]
+[Search & Filter Photographers] [Await Admin Approval]
          │                           │
          ▼                           ▼
-[Submit Booking]            [Build Studio Profile]
+[Fill Contact & Event Booking]  [Create/Edit Studio Profile]
          │                           │
          ▼                           ▼
-[Await Confirmation] <──>  [Accept / Reject Requests]
-Onboarding: Multi-role signup initializes isolated dashboards based on user intent. Photographers enter a verification queue.
+[Real-Time Status & Alerts] <──> [Accept / Reject Requests]
+```
 
-Discovery & Booking: Clients access a server-rendered grid of authorized photographers, select availability matrices, and fire a request.
+---
 
-State Resolution: Photographers manipulate incoming requests from their dedicated dashboard panels, dispatching notification queries back to clients.
+### 🛠️ Technology Stack & Dependencies
 
-🛠️ Technology Stack & Dependencies
-Backend Framework: Python, Django (MVT Architecture), Django ORM
+* **Backend Framework:** Python 3.x, Django 5.x (MVT Architecture), Django ORM
+* **Frontend Engine:** HTML5, CSS3 (Vanilla Glassmorphism), JavaScript (ES6+), Bootstrap 5.3, Bootstrap Icons, AOS (Animate On Scroll)
+* **Database Engine:** SQLite3 (Development & Production Ready)
+* **Media & Asset Isolation:** Django Media Pipeline (`ImageField` / `Pillow`)
+* **Version Control & Hosting:** Git, GitHub, PythonAnywhere
 
-Frontend Engine: HTML5, CSS3, JavaScript, Bootstrap 5, AOS Library
+---
 
-Database Management: SQLite (Development / Testing Ready)
+### 💻 Local Deployment & Setup Guide
 
-Storage & Uploads: Django Media Pipeline for automated file isolation
-
-Environment & Deployment: Git, GitHub, PythonAnywhere, WSGI/ASGI Production Layers
-
-💻 Local Deployment & Configuration
 To spin up the development environment locally:
 
-Clone the Source Ledger:
+1. **Clone the Repository:**
+   ```bash
+   git clone https://github.com/zaid-444/photography.git
+   cd photography
+   ```
 
-Bash
-git clone [https://github.com/zaid-444/photography.git](https://github.com/zaid-444/photography.git)
-cd photography
-Initialize Isolated Virtual Environment:
+2. **Initialize Isolated Virtual Environment:**
+   ```bash
+   python -m venv venv
+   # Windows:
+   venv\Scripts\activate
+   # macOS/Linux:
+   source venv/bin/activate
+   ```
 
-Bash
-python -m venv venv
-# Windows:
-venv\Scripts\activate
-# macOS/Linux:
-source venv/bin/activate
-Install Requirements & Fire Migrations:
+3. **Install Requirements & Run Database Migrations:**
+   ```bash
+   pip install -r requirements.txt
+   python manage.py migrate
+   ```
 
-Bash
-pip install -r requirements.txt
-python manage.py migrate
-Boot Up Development Server:
+4. **Start Development Server:**
+   ```bash
+   python manage.py runserver
+   ```
+   Access the local web app at `http://127.0.0.1:8000/`.
 
-Bash
-python manage.py runserver
-Access the local ecosystem via http://127.0.0.1:8000/.
+---
 
-📬 Contact & Collaboration
-Shaikh Zaid Gaffar - LinkedIn | 📧 zaidx0444@gmail.com
+### 📜 License
+This project is open-source and licensed under the [MIT License](LICENSE).
+
+Copyright (c) **2025-2026 Shaikh Zaid Gaffar**. All rights reserved.
+
+---
+
+### 📬 Contact & Collaboration
+**Shaikh Zaid Gaffar** — 📧 [zaid.dev8@gmail.com](mailto:zaid.dev8@gmail.com) | [GitHub Profile](https://github.com/zaid-444)
