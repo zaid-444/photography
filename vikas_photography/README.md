@@ -1,6 +1,6 @@
 # 📸 Professional Online Photography Booking Platform
 
-A feature-rich, enterprise-structured full-stack web application designed to streamline photography service bookings. Built with a robust **Python/Django** backend, this platform implements strict **Role-Based Access Control (RBAC)** to deliver targeted dashboards and isolated workflows for Administrators, Clients, and Photographers.
+A feature-rich, enterprise-structured full-stack web application designed to streamline photography service bookings. Development initiated in **September 2025**. Built with a robust **Python/Django** backend, this platform implements strict **Role-Based Access Control (RBAC)** to deliver targeted dashboards and isolated workflows for Administrators, Clients, and Photographers.
 
 🌐 **Live Architecture Demo:** [View Live App](https://zaid1dev.pythonanywhere.com/)
 
@@ -84,9 +84,9 @@ To spin up the development environment locally:
 ### 📜 License
 This project is open-source and licensed under the [MIT License](LICENSE).
 
-Copyright (c) 2026 **Shaikh Zaid Gaffar**. All rights reserved.
+Copyright (c) **2025-2026 Shaikh Zaid Gaffar**. All rights reserved.
 
 ---
 
 ### 📬 Contact & Collaboration
-**Shaikh Zaid Gaffar** — 📧 [zaidx0444@gmail.com](mailto:zaidx0444@gmail.com)
+**Shaikh Zaid Gaffar** — 📧 [zaid.dev8@gmail.com](mailto:zaid.dev8@gmail.com)
