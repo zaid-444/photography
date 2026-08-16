@@ -1,5 +1,5 @@
 {% extends 'booking/base.html' %}
-{% block title %}Book {{ photographer.user.username }}{% endblock %}
+{% block title %}Book {{ photographer.full_name|default:photographer.user.username }}{% endblock %}
 
 {% block content %}
 <style>
@@ -11,27 +11,34 @@
   .booking-card {
     backdrop-filter: blur(20px);
     background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 15px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 18px;
+    box-shadow: 0 10px 32px rgba(0, 0, 0, 0.4);
     color: white;
-    padding: 30px;
-    max-width: 600px;
+    padding: 35px;
+    max-width: 620px;
     margin: 40px auto;
     animation: fadeInUp 0.8s ease;
   }
 
   .booking-card h2 {
     color: #ffc107;
-    margin-bottom: 25px;
+    margin-bottom: 10px;
     text-align: center;
-    animation: fadeIn 1s ease-in-out;
+    font-weight: 700;
+  }
+
+  .photographer-meta {
+    text-align: center;
+    color: #cfd8dc;
+    margin-bottom: 25px;
+    font-size: 0.95rem;
   }
 
   .booking-card label {
     color: #fff;
-    font-weight: 500;
-    margin-bottom: 5px;
+    font-weight: 600;
+    margin-bottom: 6px;
     display: block;
   }
 
@@ -42,23 +49,29 @@
   .booking-card textarea,
   .booking-card select,
   .booking-card input[type="number"] {
-    background: rgba(255, 255, 255, 0.1);
-    border: none;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     color: white;
-    padding: 10px 12px;
-    border-radius: 8px;
+    padding: 12px 14px;
+    border-radius: 10px;
     width: 100%;
-    margin-bottom: 15px;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 18px;
+    transition: all 0.3s ease;
   }
 
   .booking-card input:focus,
   .booking-card textarea:focus,
   .booking-card select:focus {
     outline: none;
-    background: rgba(255, 255, 255, 0.2);
-    box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25);
+    background: rgba(255, 255, 255, 0.15);
+    border-color: #ffc107;
+    box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25);
     color: #fff;
+  }
+
+  .booking-card select option {
+    background-color: #203a43;
+    color: white;
   }
 
   .booking-card textarea {
@@ -66,85 +79,184 @@
     min-height: 100px;
   }
 
-  .booking-card button {
+  .btn-book-submit {
     background-color: #ffc107;
     border: none;
-    font-weight: 600;
-    padding: 12px 20px;
+    font-weight: 700;
+    padding: 14px 20px;
     border-radius: 10px;
     width: 100%;
     cursor: pointer;
-    transition: background 0.3s ease;
+    transition: all 0.3s ease;
     color: #000;
     font-size: 1.1rem;
     margin-top: 10px;
   }
 
-  .booking-card button:hover {
+  .btn-book-submit:hover:not(:disabled) {
     background-color: #e0a800;
-    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 193, 7, 0.4);
   }
 
-  .booking-card select option{
-    background-color: #203a43;
+  .btn-book-submit:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+    opacity: 0.65;
+  }
+
+  .booked-dates-box {
+    background: rgba(220, 53, 69, 0.12);
+    border: 1px solid rgba(220, 53, 69, 0.3);
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+  }
+
+  .booked-date-badge {
+    background: #dc3545;
     color: white;
-  }
-
-  @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-15px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .errorlist {
-    color: #ff6b6b;
-    margin-bottom: 10px;
-    list-style: none;
-    padding-left: 0;
+    font-size: 0.85rem;
+    padding: 4px 10px;
+    border-radius: 20px;
+    display: inline-block;
+    margin: 3px 2px;
   }
 </style>
 
 <div class="booking-card">
-  <h2>Book {{ photographer.user.username }}</h2>
+  <h2>📅 Book {{ photographer.full_name|default:photographer.user.username }}</h2>
+  <div class="photographer-meta">
+    <span class="me-3"><i class="bi bi-geo-alt-fill text-warning me-1"></i>{{ photographer.location }}</span>
+    <span><i class="bi bi-camera-reels-fill text-warning me-1"></i>{{ photographer.specialty }}</span>
+  </div>
 
-  <form method="POST">
+  <!-- Form Errors Alert -->
+  {% if form.errors %}
+    <div class="alert alert-danger shadow-sm mb-4">
+      <i class="bi bi-exclamation-triangle-fill me-2"></i>Please fix the errors below.
+      <ul class="mb-0 mt-2 ps-3">
+        {% for field, errors in form.errors.items %}
+          {% for error in errors %}
+            <li>{{ field|title }}: {{ error }}</li>
+          {% endfor %}
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+
+  <!-- Already Booked Dates Warning Notice -->
+  {% if booked_dates %}
+    <div class="booked-dates-box mb-4">
+      <div class="d-flex align-items-center mb-2 text-warning fw-bold small">
+        <i class="bi bi-calendar-x-fill me-2"></i>Unavailable / Already Booked Dates:
+      </div>
+      <div>
+        {% for date_str in booked_dates %}
+          <span class="booked-date-badge"><i class="bi bi-lock-fill me-1"></i>{{ date_str }}</span>
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+
+  <!-- Date Selection Warning Alert (Hidden by default, toggled via JS) -->
+  <div id="dateAlert" class="alert alert-warning d-none shadow-sm mb-3">
+    <i class="bi bi-exclamation-octagon-fill me-2"></i>
+    <span id="dateAlertText">This date is already booked! Please select another date.</span>
+  </div>
+
+  <form method="POST" id="bookingForm">
     {% csrf_token %}
-    
+
+    <h5 class="text-warning border-bottom border-secondary pb-2 mb-3"><i class="bi bi-person-vcard-fill me-2"></i>Your Contact Information</h5>
+
     <div class="form-group mb-3">
-      <label for="event_type">Event Type</label>
+      <label for="id_client_name">Your Full Name</label>
+      {{ form.client_name }}
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 form-group mb-3">
+        <label for="id_client_phone">Phone / Mobile Number (Required)</label>
+        {{ form.client_phone }}
+      </div>
+
+      <div class="col-md-6 form-group mb-3">
+        <label for="id_client_email">Email Address</label>
+        {{ form.client_email }}
+      </div>
+    </div>
+
+    <h5 class="text-warning border-bottom border-secondary pb-2 mb-3 mt-4"><i class="bi bi-calendar-event-fill me-2"></i>Event Shoot Details</h5>
+
+    <div class="form-group">
+      <label for="id_event_type">Event Type</label>
       {{ form.event_type }}
     </div>
-    
-    <div class="form-group mb-3">
-      <label for="venue">Venue</label>
+
+    <div class="form-group">
+      <label for="id_venue">Venue Address</label>
       {{ form.venue }}
     </div>
-    
-    <div class="form-group mb-3">
-      <label for="guest_count">Guest Count</label>
+
+    <div class="form-group">
+      <label for="id_guest_count">Estimated Guest Count</label>
       {{ form.guest_count }}
     </div>
-    
-    <div class="form-group mb-3">
-      <label for="date">Date</label>
+
+    <div class="form-group">
+      <label for="id_date">Event Date</label>
       {{ form.date }}
     </div>
-    
-    <div class="form-group mb-3">
-      <label for="time">Time</label>
+
+    <div class="form-group">
+      <label for="id_time">Event Start Time</label>
       {{ form.time }}
     </div>
-    
-    <div class="form-group mb-3">
-      <label for="message">Message</label>
+
+    <div class="form-group">
+      <label for="id_message">Special Message / Instructions</label>
       {{ form.message }}
     </div>
-    
-    <button type="submit" class="btn btn-primary">Book Now</button>
+
+    <button type="submit" class="btn-book-submit" id="submitBtn">
+      <i class="bi bi-calendar-check-fill me-2"></i>Confirm Booking Request
+    </button>
   </form>
 </div>
+
+<!-- JavaScript for Dynamic Calendar Lock & Date Validation -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const dateInput = document.querySelector('input[type="date"]') || document.getElementById('id_date');
+    const submitBtn = document.getElementById('submitBtn');
+    const dateAlert = document.getElementById('dateAlert');
+    const dateAlertText = document.getElementById('dateAlertText');
+
+    // Parse array of booked dates passed from Django context
+    const bookedDates = {{ booked_dates_json|safe|default:"[]" }};
+
+    if (dateInput) {
+      // 1. Lock past dates: set min date to today (YYYY-MM-DD)
+      const today = new Date().toISOString().split('T')[0];
+      dateInput.setAttribute('min', today);
+
+      // 2. Validate selected date on change
+      dateInput.addEventListener('change', function () {
+        const selectedDate = this.value;
+
+        if (bookedDates.includes(selectedDate)) {
+          // Date is already booked! Show warning alert & disable submit button
+          dateAlertText.textContent = `🚫 ${selectedDate} is already booked for this photographer! Please choose a different date.`;
+          dateAlert.classList.remove('d-none');
+          submitBtn.disabled = true;
+        } else {
+          // Date is available
+          dateAlert.classList.add('d-none');
+          submitBtn.disabled = false;
+        }
+      });
+    }
+  });
+</script>
 {% endblock %}

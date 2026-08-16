@@ -1,199 +1,417 @@
 {% extends 'booking/base.html' %}
-{% block title %}Dashboard{% endblock %}
+{% block title %}Dashboard - A One Pandey Photography{% endblock %}
 
 {% block content %}
 <style>
   body {
-    background: linear-gradient(to right, #141e30, #243b55);
-  }
-
-  .dashboard-box {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
+    background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
     color: white;
-    border-radius: 15px;
-    padding: 30px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-    animation: fadeInUp 0.8s ease-in-out;
   }
 
-  .dashboard-box h2 {
+  .dashboard-container {
+    padding-top: 20px;
+    padding-bottom: 50px;
+  }
+
+  .welcome-header {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 18px;
+    padding: 25px 30px;
+    margin-bottom: 35px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  }
+
+  .welcome-header h2 {
     color: #ffc107;
-    font-weight: bold;
+    font-weight: 800;
+    margin-bottom: 5px;
+  }
+
+  /* Booking Cards & Glass Containers */
+  .glass-panel {
+    background: rgba(15, 27, 34, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 18px;
+    padding: 25px;
+    margin-bottom: 30px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+  }
+
+  .panel-title {
+    color: #ffc107;
+    font-weight: 700;
+    font-size: 1.35rem;
     margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding-bottom: 12px;
   }
 
-  .dashboard-box p {
-    font-size: 1.1rem;
-    color: #f8f9fa;
+  /* Request Card for Photographers */
+  .request-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 193, 7, 0.2);
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
   }
 
-  .dashboard-box .btn-primary {
-    background-color: #ffc107;
-    color: black;
-    font-weight: bold;
-    border: none;
+  .request-card:hover {
+    background: rgba(255, 255, 255, 0.07);
+    border-color: #ffc107;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
   }
 
-  .dashboard-box .btn-primary:hover {
-    background-color: #e0a800;
-  }
-
-  .dashboard-box .btn-success {
-    background-color: #28a745;
-    font-weight: bold;
-    border: none;
-  }
-
-  .dashboard-box .btn-success:hover {
-    background-color: #218838;
-  }
-
-  .btn-danger {
-    background-color: #dc3545;
-    font-weight: bold;
-    border: none;
-  }
-
-  .btn-danger:hover {
-    background-color: #c82333;
-  }
-
-  .alert-warning {
-    background-color: rgba(255, 193, 7, 0.2);
-    border-color: rgba(255, 193, 7, 0.3);
+  .event-badge {
+    background: rgba(255, 193, 7, 0.15);
     color: #ffc107;
+    border: 1px solid rgba(255, 193, 7, 0.3);
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+  }
+
+  .detail-item {
+    font-size: 0.95rem;
+    color: #e0e0e0;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+  }
+
+  .detail-label {
+    color: #ffc107;
+    font-weight: 600;
+    margin-right: 8px;
+    display: inline-block;
+  }
+
+  .detail-value {
+    color: #ffffff;
     font-weight: 500;
   }
 
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(30px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  .client-message-box {
+    background: rgba(0, 0, 0, 0.25);
+    border-left: 3px solid #ffc107;
+    padding: 10px 14px;
+    border-radius: 6px;
+    margin-top: 12px;
+    font-size: 0.9rem;
+    color: #cfd8dc;
+  }
+
+  /* Custom Status Badges */
+  .status-badge-pending {
+    background: rgba(255, 193, 7, 0.2);
+    color: #ffc107;
+    border: 1px solid rgba(255, 193, 7, 0.4);
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-weight: 600;
+  }
+
+  .status-badge-accepted {
+    background: rgba(40, 167, 69, 0.2);
+    color: #28a745;
+    border: 1px solid rgba(40, 167, 69, 0.4);
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-weight: 600;
+  }
+
+  .status-badge-rejected {
+    background: rgba(220, 53, 69, 0.2);
+    color: #dc3545;
+    border: 1px solid rgba(220, 53, 69, 0.4);
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-weight: 600;
+  }
+
+  /* Notification Items */
+  .notif-item {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-bottom: 10px;
+  }
+
+  .btn-accept {
+    background-color: #28a745;
+    color: white;
+    font-weight: 700;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+  }
+
+  .btn-accept:hover {
+    background-color: #218838;
+    color: white;
+    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);
+  }
+
+  .btn-reject {
+    background-color: #dc3545;
+    color: white;
+    font-weight: 700;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+  }
+
+  .btn-reject:hover {
+    background-color: #c82333;
+    color: white;
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4);
   }
 </style>
 
-<div class="container mt-5 mb-5">
-  <div class="dashboard-box">
-    <h2>👋 Welcome, {{ user.username }}</h2>
-
-    <!-- Photographer Dashboard -->
-    {% if role == 'photographer' %}
-      {% if is_approved %}
-        {% if profile %}
-          <h4 class="mt-3 text-warning">📸 Your Photographer Dashboard</h4>
-          <p><strong>Specialty:</strong> {{ profile.specialty }}</p>
-          <p><strong>Location:</strong> {{ profile.location }}</p>
-
-          {% if profile.profile_pic %}
-            <img src="{{ profile.profile_pic.url }}" alt="Profile Picture" width="120" class="rounded mb-3">
-          {% endif %}
-
-          <hr>
-          <h5>📌 Booking Requests:</h5>
-
-          {% if bookings %}
-            <table class="table table-bordered text-white">
-              <thead>
-                <tr>
-                  <th>Client</th>
-                  <th>Event Date</th>
-                  <th>Status</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for booking in bookings %}
-                  <tr>
-                    <td>{{ booking.customer.username }}</td>
-                    <td>{{ booking.date }}</td>
-                    <td>{{ booking.status }}</td>
-                    <td>
-                      {% if booking.status == "pending" %}
-                        <a href="{% url 'update_booking_status' booking.id 'accepted' %}" class="btn btn-success btn-sm">Accept</a>
-                        <a href="{% url 'update_booking_status' booking.id 'rejected' %}" class="btn btn-danger btn-sm">Reject</a>
-                      {% else %}
-                        <span>{{ booking.status }}</span>
-                      {% endif %}
-                    </td>
-                  </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          {% else %}
-            <p>No bookings yet.</p>
-          {% endif %}
-
-        {% else %}
-          <p>You don’t have a photographer profile yet.</p>
-          <a href="{% url 'create_photographer_profile' %}" class="btn btn-primary">➕ Create Profile</a>
-        {% endif %}
-
-      {% else %}
-        <div class="alert alert-warning mt-3">
-          🕒 Your account is under review. Please wait for admin approval.
-        </div>
-      {% endif %}
-    {% endif %}
-
-    <!-- Client Dashboard -->
+<div class="container dashboard-container">
+  <!-- Welcome Banner -->
+  <div class="welcome-header d-flex justify-content-between align-items-center flex-wrap gap-3">
+    <div>
+      <h2>👋 Welcome, {{ user.username }}!</h2>
+      <p class="mb-0 text-light small">Manage your profile, bookings, and notifications from your dashboard.</p>
+    </div>
     {% if role == 'client' %}
-      <p class="mt-2">Browse from our verified photographers in your area!</p>
-      <a href="{% url 'photographer_list' %}" class="btn btn-success mt-3">📸 View Photographers</a>
-
-      <hr><hr>
-      <h5>🔔 Notifications</h5>
-      {% if notifications %}
-        <ul>
-          {% for n in notifications %}
-            <li>
-              {{ n.message }} 
-              <small>({{ n.created_at|date:"d M Y H:i" }})</small>
-            </li>
-          {% endfor %}
-        </ul>
-      {% else %}
-        <p>No new notifications.</p>
-      {% endif %}
-
-      <h4 class="mt-4 text-warning">📌 Your Bookings</h4>
-      {% if my_bookings %}
-        <table class="table table-dark table-bordered mt-3">
-          <thead>
-            <tr>
-              <th>Photographer</th>
-              <th>Date</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for booking in my_bookings %}
-              <tr>
-                <td>{{ booking.photographer.full_name }}</td>
-                <td>{{ booking.created_at|date:"M d, Y H:i" }}</td>
-                <td>
-                  {% if booking.status == "pending" %}
-                    <span class="badge bg-warning text-dark">Pending</span>
-                  {% elif booking.status == "accepted" %}
-                    <span class="badge bg-success">Accepted</span>
-                  {% elif booking.status == "rejected" %}
-                    <span class="badge bg-danger">Rejected</span>
-                  {% endif %}
-                </td>
-              </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      {% else %}
-        <p class="mt-2">You haven’t made any bookings yet.</p>
-      {% endif %}
+      <a href="{% url 'photographer_list' %}" class="btn btn-warning fw-bold px-4 rounded-3">
+        <i class="bi bi-camera-fill me-2"></i>Book A Photographer
+      </a>
     {% endif %}
   </div>
+
+  <!-- PHOTOGRAPHER DASHBOARD SECTION -->
+  {% if role == 'photographer' %}
+    {% if is_approved %}
+      {% if profile %}
+        <!-- Photographer Profile Overview Card -->
+        <div class="glass-panel mb-4">
+          <div class="row align-items-center g-3">
+            <div class="col-auto">
+              {% if profile.profile_pic %}
+                <img src="{{ profile.profile_pic.url }}" alt="Profile Picture" width="90" height="90" class="rounded-circle border border-warning" style="object-fit: cover;">
+              {% else %}
+                <div class="rounded-circle bg-warning text-dark d-flex align-items-center justify-content-center fw-bold fs-3" style="width: 90px; height: 90px;">
+                  {{ profile.full_name|default:user.username|slice:":1" }}
+                </div>
+              {% endif %}
+            </div>
+            <div class="col">
+              <h4 class="text-warning fw-bold mb-1">{{ profile.full_name|default:user.username }}</h4>
+              <p class="mb-1 text-light small"><i class="bi bi-geo-alt-fill text-warning me-1"></i>Location: <strong>{{ profile.location }}</strong></p>
+              <p class="mb-0 text-light small"><i class="bi bi-camera-reels-fill text-warning me-1"></i>Specialty: <strong>{{ profile.specialty }}</strong></p>
+            </div>
+            <div class="col-auto ms-md-auto">
+              <a href="{% url 'edit_photographer_profile' %}" class="btn btn-outline-warning fw-bold px-3 py-2 rounded-3">
+                <i class="bi bi-pencil-square me-1"></i>Edit Profile
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Booking Requests List -->
+        <div class="glass-panel">
+          <h4 class="panel-title"><i class="bi bi-calendar-event-fill me-2"></i>Client Booking Requests</h4>
+
+          {% if bookings %}
+            <div class="row">
+              {% for booking in bookings %}
+                <div class="col-md-12 col-lg-6">
+                  <div class="request-card">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                      <span class="event-badge"><i class="bi bi-tag-fill me-1"></i>{{ booking.event_type }}</span>
+                      <div>
+                        {% if booking.status == "pending" %}
+                          <span class="status-badge-pending"><i class="bi bi-clock-history me-1"></i>Pending</span>
+                        {% elif booking.status == "accepted" or booking.status == "confirmed" %}
+                          <span class="status-badge-accepted"><i class="bi bi-check-circle-fill me-1"></i>Accepted</span>
+                        {% else %}
+                          <span class="status-badge-rejected"><i class="bi bi-x-circle-fill me-1"></i>Rejected</span>
+                        {% endif %}
+                      </div>
+                    </div>
+
+                    <h5 class="text-white fw-bold mb-3"><i class="bi bi-person-fill text-warning me-2"></i>Client: {{ booking.client_name|default:booking.customer.username }}</h5>
+
+                    {% if booking.client_phone %}
+                      <div class="detail-item">
+                        <i class="bi bi-telephone-fill text-warning me-2"></i>
+                        <span class="detail-label">Phone:</span>
+                        <span class="detail-value"><a href="tel:{{ booking.client_phone }}" class="text-warning text-decoration-none fw-bold"><i class="bi bi-telephone-outbound me-1"></i>{{ booking.client_phone }}</a></span>
+                      </div>
+                    {% endif %}
+
+                    {% if booking.client_email %}
+                      <div class="detail-item">
+                        <i class="bi bi-envelope-fill text-warning me-2"></i>
+                        <span class="detail-label">Email:</span>
+                        <span class="detail-value"><a href="mailto:{{ booking.client_email }}" class="text-light text-decoration-underline">{{ booking.client_email }}</a></span>
+                      </div>
+                    {% endif %}
+
+                    <div class="detail-item">
+                      <i class="bi bi-calendar3 text-warning me-2"></i>
+                      <span class="detail-label">Date:</span>
+                      <span class="detail-value">{{ booking.date }}</span>
+                    </div>
+
+                    <div class="detail-item">
+                      <i class="bi bi-clock text-warning me-2"></i>
+                      <span class="detail-label">Time:</span>
+                      <span class="detail-value">{{ booking.time }}</span>
+                    </div>
+
+                    <div class="detail-item">
+                      <i class="bi bi-geo-alt-fill text-warning me-2"></i>
+                      <span class="detail-label">Venue:</span>
+                      <span class="detail-value">{{ booking.venue }}</span>
+                    </div>
+
+                    <div class="detail-item">
+                      <i class="bi bi-people-fill text-warning me-2"></i>
+                      <span class="detail-label">Guests:</span>
+                      <span class="detail-value">{{ booking.guest_count }} People</span>
+                    </div>
+
+                    {% if booking.message %}
+                      <div class="client-message-box">
+                        <strong><i class="bi bi-chat-quote-fill me-1"></i>Note:</strong> {{ booking.message }}
+                      </div>
+                    {% endif %}
+
+                    <!-- Action Buttons for Photographer -->
+                    {% if booking.status == "pending" %}
+                      <div class="d-flex gap-2 mt-3 pt-2 border-top border-secondary">
+                        <a href="{% url 'update_booking_status' booking.id 'accepted' %}" class="btn btn-accept flex-grow-1 text-center text-decoration-none">
+                          <i class="bi bi-check-lg me-1"></i>Accept Request
+                        </a>
+                        <a href="{% url 'update_booking_status' booking.id 'rejected' %}" class="btn btn-reject flex-grow-1 text-center text-decoration-none">
+                          <i class="bi bi-x-lg me-1"></i>Reject Request
+                        </a>
+                      </div>
+                    {% endif %}
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          {% else %}
+            <div class="text-center p-4 text-light">
+              <i class="bi bi-inbox-fill display-4 text-warning mb-2 d-block"></i>
+              <p>No booking requests received yet.</p>
+            </div>
+          {% endif %}
+        </div>
+
+      {% else %}
+        <div class="glass-panel text-center p-5">
+          <i class="bi bi-person-badge display-3 text-warning mb-3 d-block"></i>
+          <h4>Create Your Photographer Profile</h4>
+          <p class="text-light mb-4">Set up your specialty, location, and profile picture to start accepting bookings.</p>
+          <a href="{% url 'create_photographer_profile' %}" class="btn btn-warning fw-bold px-4 py-2">➕ Create Profile Now</a>
+        </div>
+      {% endif %}
+
+    {% else %}
+      <div class="alert alert-warning p-4 rounded-3 shadow">
+        <h4 class="alert-heading"><i class="bi bi-hourglass-split me-2"></i>Account Under Review</h4>
+        <p class="mb-0">Your photographer account is currently being reviewed by the admin. Once approved, you can start receiving booking requests.</p>
+      </div>
+    {% endif %}
+  {% endif %}
+
+  <!-- CLIENT DASHBOARD SECTION -->
+  {% if role == 'client' %}
+    <div class="row g-4">
+      <!-- Client Bookings -->
+      <div class="col-lg-7">
+        <div class="glass-panel h-100">
+          <h4 class="panel-title"><i class="bi bi-journal-bookmark-fill me-2"></i>Your Bookings</h4>
+
+          {% if my_bookings %}
+            {% for booking in my_bookings %}
+              <div class="request-card">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <h5 class="text-warning fw-bold mb-0">
+                    <i class="bi bi-camera-fill me-1"></i>{{ booking.photographer.full_name|default:booking.photographer.user.username }}
+                  </h5>
+                  {% if booking.status == "pending" %}
+                    <span class="status-badge-pending"><i class="bi bi-clock-history me-1"></i>Pending</span>
+                  {% elif booking.status == "accepted" or booking.status == "confirmed" %}
+                    <span class="status-badge-accepted"><i class="bi bi-check-circle-fill me-1"></i>Accepted</span>
+                  {% else %}
+                    <span class="status-badge-rejected"><i class="bi bi-x-circle-fill me-1"></i>Rejected</span>
+                  {% endif %}
+                </div>
+
+                <div class="detail-item">
+                  <i class="bi bi-tag-fill text-warning me-2"></i>
+                  <span class="detail-label">Event:</span>
+                  <span class="detail-value">{{ booking.event_type }}</span>
+                </div>
+
+                <div class="detail-item">
+                  <i class="bi bi-calendar3 text-warning me-2"></i>
+                  <span class="detail-label">Date & Time:</span>
+                  <span class="detail-value">{{ booking.date }} at {{ booking.time }}</span>
+                </div>
+
+                <div class="detail-item">
+                  <i class="bi bi-geo-alt-fill text-warning me-2"></i>
+                  <span class="detail-label">Venue:</span>
+                  <span class="detail-value">{{ booking.venue }}</span>
+                </div>
+              </div>
+            {% endfor %}
+          {% else %}
+            <div class="text-center p-4 text-light">
+              <i class="bi bi-calendar-x display-4 text-warning mb-2 d-block"></i>
+              <p>You haven’t booked any photographers yet.</p>
+              <a href="{% url 'photographer_list' %}" class="btn btn-warning fw-bold btn-sm">Explore Photographers</a>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Notifications -->
+      <div class="col-lg-5">
+        <div class="glass-panel h-100">
+          <h4 class="panel-title"><i class="bi bi-bell-fill me-2"></i>Notifications</h4>
+          {% if notifications %}
+            {% for n in notifications %}
+              <div class="notif-item">
+                <div class="d-flex justify-content-between align-items-start">
+                  <div>
+                    <i class="bi bi-info-circle-fill text-warning me-2"></i>
+                    <span>{{ n.message }}</span>
+                  </div>
+                </div>
+                <div class="text-end mt-1">
+                  <small class="text-muted" style="font-size: 0.75rem;">{{ n.created_at|date:"d M Y, H:i" }}</small>
+                </div>
+              </div>
+            {% endfor %}
+          {% else %}
+            <div class="text-center p-4 text-light">
+              <i class="bi bi-bell-slash display-4 text-muted mb-2 d-block"></i>
+              <p>No new notifications.</p>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  {% endif %}
 </div>
 {% endblock %}

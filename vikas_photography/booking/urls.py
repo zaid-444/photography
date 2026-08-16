@@ -8,6 +8,7 @@ urlpatterns=[
     path('logout/',logout_view,name='logout'),
     path('contact/',contact_view,name='contact'),
     path('photographer/profile/',create_photographer_profile, name='create_photographer_profile'),
+    path('photographer/profile/edit/', edit_photographer_profile, name='edit_photographer_profile'),
     path('dashboard/',dashboard,name='dashboard'),
     path('photographer/<int:photographer_id>/book/', book_photographer, name='book_photographer'),
     path('update-booking/<int:booking_id>/<str:status>/',update_booking_status,name='update_booking_status')

@@ -30,6 +30,9 @@ class PhotographerProfile(models.Model):
 class Booking(models.Model):
     customer = models.ForeignKey(User, on_delete=models.CASCADE, related_name="bookings")
     photographer = models.ForeignKey(PhotographerProfile, on_delete=models.CASCADE, related_name="bookings")
+    client_name = models.CharField(max_length=100, blank=True)
+    client_phone = models.CharField(max_length=20, blank=True)
+    client_email = models.EmailField(blank=True)
     event_type = models.CharField(max_length=100, choices=[
         ('wedding', 'Wedding'),
         ('birthday', 'Birthday'),
@@ -43,7 +46,9 @@ class Booking(models.Model):
     message = models.TextField(blank=True)
     status = models.CharField(max_length=20, choices=(
         ('pending', 'Pending'),
+        ('accepted', 'Accepted'),
         ('confirmed', 'Confirmed'),
+        ('rejected', 'Rejected'),
         ('cancelled', 'Cancelled'),
     ), default='pending')
     created_at = models.DateTimeField(auto_now_add=True)

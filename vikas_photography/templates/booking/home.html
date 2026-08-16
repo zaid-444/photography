@@ -1,160 +1,511 @@
 {% extends 'booking/base.html' %}
+{% load static %}
 
-{% block title %}A One Pandey Photography{% endblock %}
+{% block title %}A One Pandey Photography - Premium Photography & Videography{% endblock %}
 
 {% block hero %}
-{% load static %}
 <!-- Hero Section -->
-<div class="hero position-relative">
-    <video autoplay muted loop playsinline style="width:100%; height: 80vh; object-fit: cover;">
+<div class="hero-container position-relative">
+    <video autoplay muted loop playsinline class="hero-video">
         <source src="{% static 'videos/banner.mp4' %}" type="video/mp4">
     </video>
-    <div class="position-absolute top-0 start-0 w-100 h-100" style="background: rgba(0,0,0,0.5); z-index:1;"></div>
-    <div class="position-absolute top-50 start-50 translate-middle text-white text-center z-2 animate__animated animate__fadeInDown">
-        <h1 class="display-2 fw-bold">Welcome to A One Pandey Photography</h1>
-        <p class="lead">Capture your memories with the best in Ayodhya (Fzb.)</p>
-        <a href="{% url 'photographer_list' %}" class="btn btn-warning btn-lg mt-3 shadow">📅 Book Now</a>
+    <div class="hero-overlay"></div>
+    <div class="container position-relative z-2 h-100 d-flex align-items-center justify-content-center text-center">
+        <div class="hero-content animate__animated animate__fadeInUp" style="max-width: 850px;">
+            <span class="badge bg-warning text-dark px-3 py-2 fs-6 rounded-pill mb-3 fw-bold shadow">
+                ✨ Premier Photography Studio in Ayodhya
+            </span>
+            <h1 class="display-3 fw-bold text-white mb-3 text-shadow">
+                Capturing Moments, <span class="text-warning">Creating Memories</span>
+            </h1>
+            <p class="lead text-light mb-4 fs-4 px-md-4">
+                Professional Wedding, Event & Cinematic Photography Services. We turn your precious moments into
+                timeless art.
+            </p>
+            <div class="d-flex flex-wrap justify-content-center gap-3 mt-4">
+                <a href="{% url 'photographer_list' %}"
+                    class="btn btn-warning btn-lg px-4 py-3 fw-bold rounded-pill shadow-lg hover-scale">
+                    <i class="bi bi-camera-fill me-2"></i>Browse Photographers
+                </a>
+                <a href="{% url 'contact' %}"
+                    class="btn btn-outline-light btn-lg px-4 py-3 fw-bold rounded-pill shadow hover-scale">
+                    <i class="bi bi-envelope-fill me-2"></i>Contact Studio
+                </a>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}
 
 {% block content %}
-{% load static %}
 <style>
     body {
         background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-        min-height: 100vh;
+        color: #ffffff;
     }
-    .fw-bold {
-        color: white;
+
+    /* Hero Styling */
+    .hero-container {
+        height: 85vh;
+        min-height: 550px;
+        background: #000;
+        overflow: hidden;
+    }
+
+    @media (max-width: 768px) {
+        .hero-container {
+            height: auto;
+            min-height: 480px;
+            padding-top: 85px;
+            padding-bottom: 50px;
+        }
+        .hero-content h1 {
+            font-size: 2.1rem !important;
+        }
+        .hero-content p {
+            font-size: 1.05rem !important;
+        }
+    }
+
+    .hero-video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    .hero-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(to bottom, rgba(15, 32, 39, 0.5), rgba(15, 32, 39, 0.9));
+        z-index: 1;
+    }
+
+    .hover-scale {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .hover-scale:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 25px rgba(255, 193, 7, 0.4) !important;
+    }
+
+    /* Glassmorphism Cards */
+    .glass-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 16px;
+        transition: all 0.3s ease;
+    }
+
+    .glass-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+        border-color: rgba(255, 193, 7, 0.4);
+    }
+
+    /* Section Titles */
+    .section-header {
+        text-align: center;
+        margin-bottom: 50px;
+    }
+
+    .section-header h2 {
+        font-weight: 700;
+        color: #ffc107;
+        font-size: 2.3rem;
+    }
+
+    .section-header p {
+        color: #b0bec5;
+        font-size: 1.1rem;
+    }
+
+    /* Stats Bar */
+    .stats-bar {
+        margin-top: -60px;
+        position: relative;
+        z-index: 10;
+        margin-bottom: 70px;
+    }
+
+    .stat-box {
+        background: rgba(15, 32, 39, 0.95);
+        border: 1px solid rgba(255, 193, 7, 0.3);
+        border-radius: 16px;
+        padding: 25px 20px;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .stat-number {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: #ffc107;
+    }
+
+    .stat-label {
+        color: #cfd8dc;
+        font-size: 0.95rem;
+        font-weight: 500;
+    }
+
+    /* Service Cards */
+    .service-icon-wrapper {
+        width: 70px;
+        height: 70px;
+        background: rgba(255, 193, 7, 0.15);
+        border: 1px solid rgba(255, 193, 7, 0.3);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        color: #ffc107;
+        margin: 0 auto 20px;
+    }
+
+    /* CTA Banner */
+    .cta-banner {
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        border: 1px solid rgba(255, 193, 7, 0.3);
+        border-radius: 20px;
+        padding: 50px 30px;
+        text-align: center;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
     }
 </style>
 
-<!-- Services -->
-<h2 class="mb-4 fw-bold" data-aos="fade-up">📸 Our Services</h2>
-<div class="row g-4" data-aos="fade-up">
-    {% for service in services %}
-    <div class="col-md-4">
-        <div class="card shadow-sm h-100 border-0">
-            <img src="{% static service.image %}" class="card-img-top" alt="{{ service.title }}" height="600">
-            <div class="card-body">
-                <h5 class="card-title">{{ service.title }}</h5>
-                <p class="card-text">{{ service.description }}</p>
+<!-- Live Stats Bar -->
+<div class="container stats-bar" data-aos="zoom-in">
+    <div class="row g-4">
+        <div class="col-6 col-md-3">
+            <div class="stat-box">
+                <i class="bi bi-award text-warning fs-2 mb-2"></i>
+                <div class="stat-number">12+</div>
+                <div class="stat-label">Years of Excellence</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="stat-box">
+                <i class="bi bi-camera-fill text-warning fs-2 mb-2"></i>
+                <div class="stat-number">1,500+</div>
+                <div class="stat-label">Events Captured</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="stat-box">
+                <i class="bi bi-heart-fill text-warning fs-2 mb-2"></i>
+                <div class="stat-number">500+</div>
+                <div class="stat-label">Happy Couples</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="stat-box">
+                <i class="bi bi-star-fill text-warning fs-2 mb-2"></i>
+                <div class="stat-number">4.9★</div>
+                <div class="stat-label">Client Rating</div>
             </div>
         </div>
     </div>
-    {% endfor %}
 </div>
 
-<!-- Photography Styles -->
-<h2 class="fw-bold text-white mt-5" data-aos="fade-up">Explore Photography Styles</h2>
-<div class="row text-center text-white g-4 mt-3" data-aos="fade-up">
-    <div class="col-md-3">
-        <i class="bi bi-heart-pulse display-4 text-warning"></i>
-        <h5 class="mt-2">Pre-Wedding</h5>
+<!-- Featured Photographers Section -->
+<div class="container my-5" data-aos="fade-up">
+    <div class="section-header">
+        <h2>📸 Our Featured Photographers</h2>
+        <p>Book top-rated, background-verified professional photographers in your city</p>
     </div>
-    <div class="col-md-3">
-        <i class="bi bi-camera-reels display-4 text-warning"></i>
-        <h5 class="mt-2">Cinematic Shoots</h5>
+
+    {% if featured_photographers %}
+    <div class="row g-4">
+        {% for photographer in featured_photographers %}
+        <div class="col-md-6 col-lg-4">
+            <div class="glass-card h-100 p-3 d-flex flex-column justify-content-between">
+                <div>
+                    {% if photographer.profile_pic %}
+                    <img src="{{ photographer.profile_pic.url }}" alt="{{ photographer.full_name }}"
+                        class="w-100 rounded-3 mb-3" style="height: 260px; object-fit: cover; object-position: top;">
+                    {% else %}
+                    <img src="{% static 'images/img1.jpg' %}" alt="Default" class="w-100 rounded-3 mb-3"
+                        style="height: 260px; object-fit: cover; object-position: top;">
+                    {% endif %}
+                    {% if photographer.full_name %}
+                        <h5 class="text-warning fw-bold mb-1">{{ photographer.full_name }}</h5>
+                    {% else %}
+                        <h5 class="text-warning fw-bold mb-1">{{ photographer.user.username }}</h5>
+                    {% endif %}
+                    <p class="text-light small mb-2"><i class="bi bi-geo-alt-fill text-warning me-1"></i>{{ photographer.location }}</p>
+                    <p class="text-light small mb-3"><i class="bi bi-camera-reels me-1 text-warning"></i>Specialty: <strong>{{ photographer.specialty }}</strong></p>
+                </div>
+                <a href="{% url 'book_photographer' photographer.id %}" class="btn btn-warning w-100 fw-bold rounded-3">
+                    <i class="bi bi-calendar-check me-1"></i>Book Photographer
+                </a>
+            </div>
+        </div>
+        {% endfor %}
     </div>
-    <div class="col-md-3">
-        <i class="bi bi-person-video3 display-4 text-warning"></i>
-        <h5 class="mt-2">Portfolio</h5>
+    <div class="text-center mt-4">
+        <a href="{% url 'photographer_list' %}" class="btn btn-outline-warning btn-lg rounded-pill px-4">
+            View All Photographers <i class="bi bi-arrow-right ms-2"></i>
+        </a>
     </div>
-    <div class="col-md-3">
-        <i class="bi bi-camera2 display-4 text-warning"></i>
-        <h5 class="mt-2">Baby Shoot</h5>
+    {% else %}
+    <div class="glass-card p-4 text-center">
+        <p class="mb-3 text-warning fs-5">📸 Discover professional photographers for your upcoming event!</p>
+        <a href="{% url 'photographer_list' %}" class="btn btn-warning fw-bold">Explore All Photographers</a>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Photography Services & Styles Grid -->
+<div class="container my-5" data-aos="fade-up">
+    <div class="section-header">
+        <h2>✨ Our Specializations</h2>
+        <p>Tailored photography & videography packages for every occasion</p>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="glass-card p-4 text-center h-100">
+                <div class="service-icon-wrapper">
+                    <i class="bi bi-heart-pulse-fill"></i>
+                </div>
+                <h4 class="text-warning fw-bold mb-2">Wedding & Pre-Wedding</h4>
+                <p class="text-light small mb-0">Capturing the sacred rituals, emotions, and candid smiles of your big
+                    day with cinematic elegance.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="glass-card p-4 text-center h-100">
+                <div class="service-icon-wrapper">
+                    <i class="bi bi-film"></i>
+                </div>
+                <h4 class="text-warning fw-bold mb-2">Cinematic Films & Drones</h4>
+                <p class="text-light small mb-0">High-definition 4K video coverage, drone aerial shots, and story-driven
+                    teaser highlights.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="glass-card p-4 text-center h-100">
+                <div class="service-icon-wrapper">
+                    <i class="bi bi-balloon-fill"></i>
+                </div>
+                <h4 class="text-warning fw-bold mb-2">Birthdays & Parties</h4>
+                <p class="text-light small mb-0">Fun, energetic coverage for birthday celebrations, anniversaries, and
+                    family get-togethers.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="glass-card p-4 text-center h-100">
+                <div class="service-icon-wrapper">
+                    <i class="bi bi-person-bounding-box"></i>
+                </div>
+                <h4 class="text-warning fw-bold mb-2">Portrait & Model Shoots</h4>
+                <p class="text-light small mb-0">Studio & outdoor portrait sessions tailored for fashion models,
+                    portfolios, and personal branding.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="glass-card p-4 text-center h-100">
+                <div class="service-icon-wrapper">
+                    <i class="bi bi-building"></i>
+                </div>
+                <h4 class="text-warning fw-bold mb-2">Corporate Events</h4>
+                <p class="text-light small mb-0">Professional event coverage for corporate summits, product launches,
+                    seminars, and expos.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="glass-card p-4 text-center h-100">
+                <div class="service-icon-wrapper">
+                    <i class="bi bi-emoji-smile-fill"></i>
+                </div>
+                <h4 class="text-warning fw-bold mb-2">Baby & Kids Shoot</h4>
+                <p class="text-light small mb-0">Adorable, heartwarming newborn & toddler photo sessions with creative
+                    themes and props.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Featured Portfolio & Recent Works Gallery -->
+<div class="container my-5" data-aos="fade-up">
+    <div class="section-header">
+        <h2>🖼️ Featured Work Gallery</h2>
+        <p>A glimpse into our recent wedding, event, and portrait photography sessions</p>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="glass-card h-100 overflow-hidden p-0 border-0 shadow">
+                <img src="{% static 'images/gallery1.jpg' %}" alt="Wedding Photography" class="w-100"
+                    style="height: 250px; object-fit: cover;">
+                <div class="p-4">
+                    <span class="badge bg-warning text-dark mb-2">Wedding Shoot</span>
+                    <h5 class="text-warning fw-bold mb-2">Royal Wedding Ceremony</h5>
+                    <p class="text-light small mb-0">Timeless captures of rituals, candid smiles, and grand celebrations.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="glass-card h-100 overflow-hidden p-0 border-0 shadow">
+                <img src="{% static 'images/gallery2.jpg' %}" alt="Event Photography" class="w-100"
+                    style="height: 250px; object-fit: cover;">
+                <div class="p-4">
+                    <span class="badge bg-warning text-dark mb-2">Event Shoot</span>
+                    <h5 class="text-warning fw-bold mb-2">Festive & Special Events</h5>
+                    <p class="text-light small mb-0">Capturing pure joy, colors, and authentic moments of every celebration.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="glass-card h-100 overflow-hidden p-0 border-0 shadow">
+                <img src="{% static 'images/gallery3.jpg' %}" alt="Portrait Sessions" class="w-100"
+                    style="height: 250px; object-fit: cover;">
+                <div class="p-4">
+                    <span class="badge bg-warning text-dark mb-2">Portrait Shoot</span>
+                    <h5 class="text-warning fw-bold mb-2">Studio & Outdoor Portraits</h5>
+                    <p class="text-light small mb-0">High-end fashion, model portfolio, and personal portrait sessions.</p>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
 <!-- Why Choose Us -->
-<h2 class="fw-bold text-white mt-5" data-aos="fade-up">Why Choose A One Pandey Photography?</h2>
-<div class="row text-white mt-3 g-4" data-aos="fade-up">
-    <div class="col-md-4">
-        <div class="card bg-dark border-0 h-100 shadow text-light">
-            <div class="card-body text-center">
-                <i class="bi bi-stars display-4 text-warning"></i>
-                <h5 class="card-title mt-2">10+ Years Experience</h5>
-                <p class="card-text">Capturing memories with creativity & precision since 2012.</p>
+<div class="container my-5" data-aos="fade-up">
+    <div class="section-header">
+        <h2>💎 Why Choose A One Pandey Photography?</h2>
+        <p>Why hundreds of clients trust us for their most treasured moments</p>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-3">
+            <div class="glass-card p-4 text-center h-100">
+                <i class="bi bi-camera2 display-4 text-warning mb-3 d-block"></i>
+                <h5 class="fw-bold mb-2">4K Ultra HD Equipment</h5>
+                <p class="small text-light mb-0">Latest full-frame cameras, prime lenses, and professional lighting
+                    setups.</p>
             </div>
         </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card bg-dark border-0 h-100 shadow text-light">
-            <div class="card-body text-center">
-                <i class="bi bi-camera-video display-4 text-warning"></i>
-                <h5 class="card-title mt-2">Cinematic Shoots</h5>
-                <p class="card-text">We don’t just click, we tell stories through frames.</p>
+        <div class="col-md-3">
+            <div class="glass-card p-4 text-center h-100">
+                <i class="bi bi-stars display-4 text-warning mb-3 d-block"></i>
+                <h5 class="fw-bold mb-2">Creative Storytelling</h5>
+                <p class="small text-light mb-0">We focus on genuine candid emotions rather than just staged poses.</p>
             </div>
         </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card bg-dark border-0 h-100 shadow text-light">
-            <div class="card-body text-center">
-                <i class="bi bi-people display-4 text-warning"></i>
-                <h5 class="card-title mt-2">Happy Clients</h5>
-                <p class="card-text">Hundreds of happy families and couples recommend us.</p>
+        <div class="col-md-3">
+            <div class="glass-card p-4 text-center h-100">
+                <i class="bi bi-clock-history display-4 text-warning mb-3 d-block"></i>
+                <h5 class="fw-bold mb-2">Fast Delivery</h5>
+                <p class="small text-light mb-0">On-time delivery of edited digital albums, highlight videos, and
+                    prints.</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="glass-card p-4 text-center h-100">
+                <i class="bi bi-shield-check display-4 text-warning mb-3 d-block"></i>
+                <h5 class="fw-bold mb-2">Verified Photographers</h5>
+                <p class="small text-light mb-0">Handpicked, background-checked professional photographers for peace of
+                    mind.</p>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Testimonials -->
-<h2 class="text-white fw-bold mt-5 text-center">❤️ What Our Clients Say</h2>
-<div id="testimonialCarousel" class="carousel slide mt-4" data-bs-ride="carousel">
-  <div class="carousel-inner text-white text-center">
-    <div class="carousel-item active">
-      <blockquote class="blockquote">
-        <p>"Best photographer in town! Our wedding memories are truly magical."</p>
-        <footer class="blockquote-footer text-white">Ravi & Priya</footer>
-      </blockquote>
+<!-- Client Reviews Carousel -->
+<div class="container my-5" data-aos="fade-up">
+    <div class="section-header">
+        <h2>❤️ What Our Clients Say</h2>
+        <p>Real feedback from couples and clients across Ayodhya & Uttar Pradesh</p>
     </div>
-    <div class="carousel-item">
-      <blockquote class="blockquote">
-        <p>"Highly professional team and outstanding results."</p>
-        <footer class="blockquote-footer text-white">Neha Kapoor</footer>
-      </blockquote>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <div class="glass-card p-5 text-center">
+                            <div class="mb-3 text-warning">
+                                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
+                                    class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
+                                    class="bi bi-star-fill"></i>
+                            </div>
+                            <blockquote class="blockquote mb-4">
+                                <p class="fs-5 italic">"A One Pandey Photography made our wedding unforgettable! Every
+                                    single frame captured the genuine joy and traditional essence of our wedding
+                                    rituals. Highly recommended!"</p>
+                            </blockquote>
+                            <h6 class="text-warning fw-bold mb-0">Ravi & Priya Sharma</h6>
+                            <small class="text-light">Wedding Booking - Ayodhya</small>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="glass-card p-5 text-center">
+                            <div class="mb-3 text-warning">
+                                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
+                                    class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
+                                    class="bi bi-star-fill"></i>
+                            </div>
+                            <blockquote class="blockquote mb-4">
+                                <p class="fs-5 italic">"Punctual, super friendly, and extremely skilled team. Their
+                                    drone video coverage of our corporate event was top-notch!"</p>
+                            </blockquote>
+                            <h6 class="text-warning fw-bold mb-0">Vikramaditya Verma</h6>
+                            <small class="text-light">Corporate Event Booking - Lucknow</small>
+                        </div>
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel"
+                    data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel"
+                    data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
-<!-- Gallery -->
-    <h2 class="mb-4 fw-bold" data-aos="fade-up">📸 Our Services</h2>
-    <div class="row g-4" data-aos="fade-up">
-        <div class="col-md-4">
-            <div class="card shadow-sm h-100 border-0">
-                <img src="{% static 'images/img1.jpg' %}" class="card-img-top" alt="Weddings" height="600">
-                <div class="card-body">
-                    <h5 class="card-title">Wedding Photography</h5>
-                    <p class="card-text">Timeless captures for your most memorable day.</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card shadow-sm h-100 border-0">
-                <img src="{% static 'images/img2.jpg' %}" class="card-img-top" alt="Events" height="600">
-                <div class="card-body">
-                    <h5 class="card-title">Event Photography</h5>
-                    <p class="card-text">Capturing joy in every celebration.</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card shadow-sm h-100 border-0">
-                <img src="{% static 'images/img3.jpg' %}" class="card-img-top" alt="Portraits" height="600">
-                <div class="card-body">
-                    <h5 class="card-title">Portrait Sessions</h5>
-                    <p class="card-text">Studio and outdoor portraits with personality.</p>
-                </div>
-            </div>
+<!-- CTA Call to Action Banner -->
+<div class="container my-5" data-aos="zoom-in">
+    <div class="cta-banner">
+        <h2 class="display-5 fw-bold text-white mb-3">Ready to Capture Your Unforgettable Moments?</h2>
+        <p class="lead text-light mb-4" style="max-width: 700px; margin: 0 auto;">
+            Book top professional photographers for your upcoming wedding, party, or shoot with full confidence.
+        </p>
+        <div class="d-flex flex-wrap justify-content-center gap-3">
+            <a href="{% url 'photographer_list' %}"
+                class="btn btn-warning btn-lg px-5 py-3 fw-bold rounded-pill shadow hover-scale">
+                <i class="bi bi-calendar2-check-fill me-2"></i>Book A Photographer Now
+            </a>
+            <a href="{% url 'contact' %}"
+                class="btn btn-outline-light btn-lg px-4 py-3 fw-bold rounded-pill hover-scale">
+                <i class="bi bi-chat-dots-fill me-2"></i>Contact Studio
+            </a>
         </div>
     </div>
 </div>
 
 <!-- Floating WhatsApp Button -->
-<a href="https://wa.me/918176030749" class="position-fixed bottom-0 end-0 m-4 btn btn-success btn-lg rounded-circle shadow" style="z-index: 999;">
-  <i class="bi bi-whatsapp"></i>
+<a href="https://wa.me/918176030749" target="_blank"
+    class="position-fixed bottom-0 end-0 m-4 btn btn-success btn-lg rounded-circle shadow-lg hover-scale"
+    style="z-index: 999; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;"
+    title="Chat on WhatsApp">
+    <i class="bi bi-whatsapp"></i>
 </a>
 {% endblock %}

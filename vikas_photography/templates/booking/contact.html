@@ -6,97 +6,226 @@
 {% block content %}
 <style>
   body {
-    background: linear-gradient(to right, #1d2b64, #f8cdda);
-    min-height: 100vh;
+    background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
     color: white;
   }
 
-  .contact-container {
-    margin-top: 80px;
-    padding: 40px 20px;
+  .contact-section {
+    padding: 30px 0 60px 0;
   }
 
-  .contact-card {
+  .contact-card, .info-card {
     background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    padding: 30px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-
-  .contact-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
-  }
-
-  .contact-icon {
-    font-size: 1.3rem;
-    color: #ffc107;
-    margin-right: 10px;
-  }
-
-  .contact-label {
-    font-weight: 600;
-    color: #fff;
-  }
-
-  .contact-value a {
-    color: #ffc107;
-    text-decoration: none;
-    font-weight: 500;
-  }
-
-  .contact-value a:hover {
-    color: #e0a800;
-    text-decoration: underline;
+    backdrop-filter: blur(15px);
+    border-radius: 18px;
+    padding: 35px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    height: 100%;
+    animation: fadeInUp 0.8s ease;
   }
 
   .section-title {
-    text-align: center;
-    font-weight: bold;
-    font-size: 2.2rem;
+    font-weight: 700;
     color: #ffc107;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+
+  .section-subtitle {
+    color: #cfd8dc;
+    text-align: center;
     margin-bottom: 40px;
+  }
+
+  .info-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 25px;
+  }
+
+  .info-icon {
+    width: 48px;
+    height: 48px;
+    background: rgba(255, 193, 7, 0.15);
+    border: 1px solid rgba(255, 193, 7, 0.3);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    color: #ffc107;
+    margin-right: 18px;
+    flex-shrink: 0;
+  }
+
+  .info-text h6 {
+    color: #ffc107;
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+
+  .info-text p, .info-text a {
+    color: #e0e0e0;
+    margin-bottom: 0;
+    text-decoration: none;
+    font-size: 0.98rem;
+  }
+
+  .info-text a:hover {
+    color: #ffc107;
+    text-decoration: underline;
+  }
+
+  .form-control, .form-select {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+    border-radius: 10px;
+    padding: 12px 15px;
+  }
+
+  .form-control::placeholder {
+    color: #aaaaaa;
+  }
+
+  .form-control:focus, .form-select:focus {
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+    border-color: #ffc107;
+    box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25);
+  }
+
+  .form-label {
+    color: #e0e0e0;
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+
+  .btn-submit {
+    background: #ffc107;
+    color: #000;
+    font-weight: 700;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+  }
+
+  .btn-submit:hover {
+    background: #e0a800;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 193, 7, 0.4);
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 </style>
 
-<div class="container contact-container" data-aos="zoom-in">
-  <h2 class="section-title"><i class="bi bi-geo-alt-fill me-2"></i>Contact & Location</h2>
+<div class="container contact-section">
+  <h2 class="section-title"><i class="bi bi-envelope-paper-heart-fill me-2"></i>Get In Touch With Us</h2>
+  <p class="section-subtitle">Have questions or special requirements? Send us a message or contact us directly.</p>
 
-  <div class="row justify-content-center">
-    <div class="col-lg-8">
+
+
+  <div class="row g-4">
+    <!-- Contact Info Column -->
+    <div class="col-lg-5">
+      <div class="info-card">
+        <h4 class="mb-4 text-warning"><i class="bi bi-geo-alt-fill me-2"></i>Contact Details</h4>
+
+        <div class="info-item">
+          <div class="info-icon">
+            <i class="bi bi-geo-alt-fill"></i>
+          </div>
+          <div class="info-text">
+            <h6>Our Studio Address</h6>
+            <p>Miya Ka Purwa, Pure Shah Lal, Ayodhya (Fzb.), Pin: 225408</p>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-icon">
+            <i class="bi bi-telephone-fill"></i>
+          </div>
+          <div class="info-text">
+            <h6>Phone & WhatsApp</h6>
+            <p><a href="tel:8176030749">+91 8176030749</a></p>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-icon">
+            <i class="bi bi-envelope-fill"></i>
+          </div>
+          <div class="info-text">
+            <h6>Email Address</h6>
+            <p><a href="mailto:panditvikaspandey7652@gmail.com">panditvikaspandey7652@gmail.com</a></p>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-icon">
+            <i class="bi bi-instagram"></i>
+          </div>
+          <div class="info-text">
+            <h6>Instagram</h6>
+            <p><a href="https://instagram.com/ixbrahman" target="_blank">@ixbrahman</a></p>
+          </div>
+        </div>
+
+        <div class="info-item mb-0">
+          <div class="info-icon">
+            <i class="bi bi-clock-fill"></i>
+          </div>
+          <div class="info-text">
+            <h6>Working Hours</h6>
+            <p>Monday - Sunday: 9:00 AM - 9:00 PM</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Inquiry Form Column -->
+    <div class="col-lg-7">
       <div class="contact-card">
+        <h4 class="mb-4 text-warning"><i class="bi bi-chat-dots-fill me-2"></i>Send Us a Message</h4>
 
-        <p class="mb-4">
-          <i class="bi bi-geo-alt-fill contact-icon"></i>
-          <span class="contact-label">Address:</span>
-          <span class="contact-value">Miya Ka Purwa, Pure Shah Lal, Ayodhya (Fzb.), Pin 225408</span>
-        </p>
-
-        <p class="mb-4">
-          <i class="bi bi-telephone-fill contact-icon"></i>
-          <span class="contact-label">Phone:</span>
-          <span class="contact-value"><a href="tel:8176030749">8176030749</a></span>
-        </p>
-
-        <p class="mb-4">
-          <i class="bi bi-envelope-fill contact-icon"></i>
-          <span class="contact-label">Email:</span>
-          <span class="contact-value">
-            <a href="mailto:panditvikaspandey7652@gmail.com">panditvikaspandey7652@gmail.com</a>
-          </span>
-        </p>
-
-        <p class="mb-0">
-          <i class="bi bi-instagram contact-icon"></i>
-          <span class="contact-label">Instagram:</span>
-          <span class="contact-value">
-            <a href="https://instagram.com/ixbrahman" target="_blank">@ixbrahman</a>
-          </span>
-        </p>
-
+        <form method="post">
+          {% csrf_token %}
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">Your Name</label>
+              <input type="text" name="name" class="form-control" placeholder="Enter your full name" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Your Email</label>
+              <input type="email" name="email" class="form-control" placeholder="name@example.com" required>
+            </div>
+            <div class="col-12">
+              <label class="form-label">Subject</label>
+              <input type="text" name="subject" class="form-control" placeholder="e.g. Wedding Photography Inquiry" required>
+            </div>
+            <div class="col-12">
+              <label class="form-label">Message</label>
+              <textarea name="message" class="form-control" rows="5" placeholder="Write your message or event details here..." required></textarea>
+            </div>
+            <div class="col-12">
+              <button type="submit" class="btn btn-submit w-100 mt-2">
+                <i class="bi bi-send-fill me-2"></i>Send Message
+              </button>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
   </div>

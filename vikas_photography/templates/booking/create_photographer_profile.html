@@ -117,11 +117,7 @@
 <div class="profile-card">
     <h3>📸 Create Your Photographer Profile</h3>
 
-    {% if messages %}
-        {% for message in messages %}
-            <div class="alert alert-info">{{ message }}</div>
-        {% endfor %}
-    {% endif %}
+
 
     <form method="post" enctype="multipart/form-data" novalidate>
         {% csrf_token %}

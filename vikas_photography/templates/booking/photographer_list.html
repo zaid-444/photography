@@ -1,101 +1,317 @@
 {% extends 'booking/base.html' %}
 {% load static %}
 
-{% block title %}A One Pandey Photography{% endblock %}
+{% block title %}Explore Approved Photographers - A One Pandey Photography{% endblock %}
 
 {% block content %}
 <style>
   body {
     background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-  }
-
-  .card {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
     color: white;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border-radius: 15px;
   }
 
-  .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(255, 255, 255, 0.15);
+  /* Search & Filter Card Styling */
+  .filter-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 18px;
+    padding: 25px;
+    margin-bottom: 45px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  }
+
+  .filter-card .form-control,
+  .filter-card .form-select {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: white;
+    border-radius: 10px;
+    padding: 12px 15px;
+  }
+
+  .filter-card .form-control::placeholder {
+    color: #b0bec5;
+  }
+
+  .filter-card .form-control:focus,
+  .filter-card .form-select:focus {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: #ffc107;
+    box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25);
+    color: white;
+  }
+
+  .filter-card select option {
+    background-color: #1a2a32;
+    color: white;
+  }
+
+  .btn-search {
+    background-color: #ffc107;
+    color: #000;
+    font-weight: 700;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+  }
+
+  .btn-search:hover {
+    background-color: #e0a800;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 193, 7, 0.4);
+  }
+
+  .btn-reset {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #cfd8dc;
+    font-weight: 600;
+    padding: 12px 18px;
+    border-radius: 10px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+  }
+
+  .btn-reset:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffc107;
+    border-color: #ffc107;
+  }
+
+  /* Photographer Card */
+  .photographer-card {
+    background: rgba(15, 27, 34, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 18px;
+    overflow: hidden;
+    transition: all 0.35s ease;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+  }
+
+  .photographer-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.5);
+    border-color: rgba(255, 193, 7, 0.45);
+  }
+
+  .img-wrapper {
+    position: relative;
+    height: 260px;
+    overflow: hidden;
+    background: #0f2027;
   }
 
   .card-img-top {
-    height: 250px;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
+    object-position: 50% 30%;
+    transition: transform 0.5s ease;
+  }
+
+  .photographer-card:hover .card-img-top {
+    transform: scale(1.04);
+  }
+
+  .verified-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: rgba(40, 167, 69, 0.92);
+    backdrop-filter: blur(5px);
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    z-index: 2;
+  }
+
+  .specialty-badge {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    background: rgba(15, 32, 39, 0.85);
+    border: 1px solid rgba(255, 193, 7, 0.4);
+    color: #ffc107;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 20px;
+    backdrop-filter: blur(5px);
+    z-index: 2;
+  }
+
+  .card-body-content {
+    padding: 20px;
   }
 
   .card-title {
-    font-weight: bold;
+    font-weight: 700;
     color: #ffc107;
+    font-size: 1.3rem;
+    margin-bottom: 12px;
   }
 
-  .card-text {
-    color: #f1f1f1;
+  .info-row {
+    color: #e0e0e0;
     font-size: 0.95rem;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
   }
 
-  .no-photographers {
+  .info-row i {
+    width: 24px;
     color: #ffc107;
-    font-weight: 600;
-    text-align: center;
-    margin-top: 40px;
+    font-size: 1.05rem;
   }
 
-  h3 {
+  .btn-book-card {
+    background: #ffc107;
+    color: #000;
+    font-weight: 700;
+    border: none;
+    padding: 12px;
+    border-radius: 10px;
+    width: 100%;
+    transition: all 0.3s ease;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+  }
+
+  .btn-book-card:hover {
+    background: #e0a800;
+    color: #000;
+    box-shadow: 0 5px 15px rgba(255, 193, 7, 0.4);
+  }
+
+  .section-title {
     color: #ffc107;
     text-align: center;
-    margin-bottom: 40px;
-    animation: fadeIn 1s ease-in-out;
+    font-weight: 800;
+    margin-bottom: 10px;
+    font-size: 2.2rem;
   }
 
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(-15px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  .section-sub {
+    color: #cfd8dc;
+    text-align: center;
+    margin-bottom: 35px;
   }
 </style>
 
-<div class="container mt-5 mb-5">
-  <h3>📸 Available Photographers</h3>
+<div class="container mt-4 mb-5">
+  <h2 class="section-title"><i class="bi bi-camera-fill me-2"></i>Find Verified Photographers</h2>
+  <p class="section-sub">Browse top professional photographers, check locations, and book your shoot instantly.</p>
 
+  <!-- Search & Filter Bar Form -->
+  <div class="filter-card">
+    <form method="GET" action="{% url 'photographer_list' %}">
+      <div class="row g-3 align-items-end">
+        <!-- Search Keyword Input -->
+        <div class="col-lg-4 col-md-12">
+          <label class="form-label text-light small fw-bold">🔍 Search Name / Keyword</label>
+          <input type="text" name="search" class="form-control" placeholder="Type photographer name or keyword..." value="{{ search_query|default:'' }}">
+        </div>
+
+        <!-- Location Filter Dropdown -->
+        <div class="col-md-4 col-lg-3">
+          <label class="form-label text-light small fw-bold">📍 Location / City</label>
+          <select name="location" class="form-select">
+            <option value="">All Locations</option>
+            {% for loc in locations %}
+              <option value="{{ loc }}" {% if selected_location == loc %}selected{% endif %}>{{ loc }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- Specialty Filter Dropdown -->
+        <div class="col-md-4 col-lg-3">
+          <label class="form-label text-light small fw-bold">📸 Specialty</label>
+          <select name="specialty" class="form-select">
+            <option value="">All Specialties</option>
+            {% for spec in specialties %}
+              <option value="{{ spec }}" {% if selected_specialty == spec %}selected{% endif %}>{{ spec }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="col-md-4 col-lg-2 d-flex gap-2">
+          <button type="submit" class="btn btn-search flex-grow-1">
+            <i class="bi bi-search me-1"></i>Search
+          </button>
+          <a href="{% url 'photographer_list' %}" class="btn btn-reset" title="Reset Filters">
+            <i class="bi bi-arrow-counterclockwise fs-5"></i>
+          </a>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- Photographers List Grid -->
   {% if photographers %}
-    <div class="row">
+    <div class="row g-4">
       {% for photographer in photographers %}
-        <div class="col-md-6 col-lg-4 mb-4">
-          <div class="card h-100 shadow-sm">
-            {% if photographer.profile_pic %}
-              <img src="{{ photographer.profile_pic.url }}" class="card-img-top" alt="{{ photographer.user.username }}">
-            {% else %}
-              <img src="{% static 'default-photographer.jpg' %}" class="card-img-top" alt="Default">
-            {% endif %}
-            <div class="card-body">
-  <h5 class="card-title">{{ photographer.user.username }}</h5>
-  <p class="card-text">
-    <strong>Specialty:</strong> {{ photographer.specialty }}<br>
-    <strong>Location:</strong> {{ photographer.location }}
-  </p>
+        <div class="col-md-6 col-lg-4">
+          <div class="photographer-card h-100 d-flex flex-column justify-content-between">
+            <div>
+              <!-- Image Banner with Badges -->
+              <div class="img-wrapper">
+                <span class="verified-badge"><i class="bi bi-patch-check-fill me-1"></i>Verified</span>
+                {% if photographer.profile_pic %}
+                  <img src="{{ photographer.profile_pic.url }}" class="card-img-top" alt="{{ photographer.full_name|default:photographer.user.username }}">
+                {% else %}
+                  <img src="{% static 'images/img1.jpg' %}" class="card-img-top" alt="Default">
+                {% endif %}
+                <span class="specialty-badge"><i class="bi bi-stars me-1"></i>{{ photographer.specialty }}</span>
+              </div>
 
-  <a href="{% url 'book_photographer' photographer.id %}" 
-     class="btn btn-warning w-100 mt-2">📅 Book Now</a>
-</div>
+              <!-- Content Area -->
+              <div class="card-body-content">
+                <h5 class="card-title">{{ photographer.full_name|default:photographer.user.username }}</h5>
+
+                <div class="info-row">
+                  <i class="bi bi-geo-alt-fill"></i>
+                  <span><strong>Location:</strong> {{ photographer.location }}</span>
+                </div>
+
+                {% if photographer.phone_number %}
+                  <div class="info-row">
+                    <i class="bi bi-telephone-fill"></i>
+                    <span><strong>Phone:</strong> {{ photographer.phone_number }}</span>
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="px-3 pb-3">
+              <a href="{% url 'book_photographer' photographer.id %}" class="btn-book-card">
+                <i class="bi bi-calendar-check-fill me-2"></i>Book Photographer
+              </a>
+            </div>
 
           </div>
         </div>
       {% endfor %}
     </div>
   {% else %}
-    <p class="no-photographers">🚫 No photographers available yet.</p>
+    <div class="filter-card text-center p-5">
+      <i class="bi bi-search display-3 text-warning mb-3 d-block"></i>
+      <h4 class="text-warning fw-bold">No Photographers Found</h4>
+      <p class="text-light mb-4">No matching photographers found for your criteria. Try adjusting filters.</p>
+      <a href="{% url 'photographer_list' %}" class="btn btn-search px-4">Reset All Filters</a>
+    </div>
   {% endif %}
 </div>
 {% endblock %}

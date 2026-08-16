@@ -1,0 +1,153 @@
+{% extends 'booking/base.html' %}
+{% block title %}Edit Photographer Profile - A One Pandey Photography{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+        min-height: 100vh;
+    }
+
+    .edit-profile-card {
+        backdrop-filter: blur(20px);
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 18px;
+        box-shadow: 0 10px 32px rgba(0, 0, 0, 0.4);
+        color: white;
+        padding: 35px;
+        max-width: 600px;
+        margin: 40px auto;
+        animation: fadeInUp 0.8s ease;
+    }
+
+    .edit-profile-card h3 {
+        color: #ffc107;
+        font-weight: 800;
+        margin-bottom: 25px;
+        text-align: center;
+    }
+
+    .edit-profile-card label {
+        color: #ffffff;
+        font-weight: 600;
+        margin-bottom: 6px;
+        display: block;
+    }
+
+    .edit-profile-card input[type="text"],
+    .edit-profile-card input[type="number"],
+    .edit-profile-card input[type="file"] {
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        color: white;
+        padding: 12px 14px;
+        border-radius: 10px;
+        width: 100%;
+        margin-bottom: 18px;
+        transition: all 0.3s ease;
+    }
+
+    .edit-profile-card input:focus {
+        outline: none;
+        background: rgba(255, 255, 255, 0.15);
+        border-color: #ffc107;
+        box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25);
+        color: #fff;
+    }
+
+    .btn-update-profile {
+        background-color: #ffc107;
+        color: #000;
+        font-weight: 700;
+        border: none;
+        padding: 14px 20px;
+        border-radius: 10px;
+        width: 100%;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 1.05rem;
+    }
+
+    .btn-update-profile:hover {
+        background-color: #e0a800;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(255, 193, 7, 0.4);
+    }
+
+    .dp-preview-container {
+        text-align: center;
+        margin-bottom: 25px;
+    }
+
+    .dp-preview-img {
+        width: 110px;
+        height: 110px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 3px solid #ffc107;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+    }
+
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+<div class="container mt-4 mb-5">
+    <div class="edit-profile-card">
+        <h3>✏️ Edit Photographer Profile</h3>
+
+        <!-- Current Profile Picture Preview -->
+        <div class="dp-preview-container">
+            {% if profile.profile_pic %}
+                <img src="{{ profile.profile_pic.url }}" alt="Current Profile Pic" class="dp-preview-img mb-2">
+            {% else %}
+                <div class="dp-preview-img bg-warning text-dark d-inline-flex align-items-center justify-content-center fw-bold fs-2 mb-2">
+                    {{ profile.full_name|default:user.username|slice:":1" }}
+                </div>
+            {% endif %}
+            <p class="text-light small mb-0">Current Profile Picture</p>
+        </div>
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label for="id_full_name">Full Name</label>
+                {{ form.full_name }}
+            </div>
+
+            <div class="mb-3">
+                <label for="id_phone_number">Phone Number</label>
+                {{ form.phone_number }}
+            </div>
+
+            <div class="mb-3">
+                <label for="id_specialty">Specialty (e.g., Wedding, Portrait, Cinematic)</label>
+                {{ form.specialty }}
+            </div>
+
+            <div class="mb-3">
+                <label for="id_location">Location / City</label>
+                {{ form.location }}
+            </div>
+
+            <div class="mb-3">
+                <label for="id_profile_pic">Change Profile Picture (DP)</label>
+                {{ form.profile_pic }}
+            </div>
+
+            <div class="d-flex gap-2 mt-4">
+                <button type="submit" class="btn-update-profile flex-grow-1">
+                    <i class="bi bi-check-circle-fill me-2"></i>Save Profile Changes
+                </button>
+                <a href="{% url 'dashboard' %}" class="btn btn-outline-light px-4 py-2 rounded-3 text-decoration-none d-flex align-items-center">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
